@@ -1,0 +1,7 @@
+**/dist/**
+**/gaspush/**
+**/docs/**
+**/node_modules/**
+**/node_modules/.bin/**
+**/coverage/**
+**/.nyc_output/**

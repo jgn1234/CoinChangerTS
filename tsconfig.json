@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonJS",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+        "*": [
+            "node_modules/*",
+            "src/types/*"
+        ],
+    }
+  },
+  "include": [
+    "src/**/*"
+    ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/*.type.ts"
+    ],
+  "typedocOptions": {
+    "inputFiles": ["src"],
+    "exclude" : ["**/Example_Code", "**/*.spec.ts", "**/*+(index|.spec|.e2e).ts"],
+    "mode": "modules",
+    "out": "docs"
+  },
+  "ts-node": {
+    "compiler-options": [{"module": "commonjs"}]
+  }
+}
