@@ -63,5 +63,3 @@ const coinChanger = (changeToMake: number) => {
   const res = coins.reduce(makeChange, <ChangeTracker> {remainingChange: changeToMake, coinsToReturn: ''})
   return res.coinsToReturn
 }
-
-// console.log(coinChanger(1))
