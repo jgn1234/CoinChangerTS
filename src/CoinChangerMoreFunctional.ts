@@ -11,7 +11,6 @@ const While = (pred: Function, x: any) => {
   return ({
     attempt: (fn: Function): any => {
       const y = fn(x)
-      // console.log(`x: ${JSON.stringify(x)}, y: ${JSON.stringify(y)}, pred(y): ${pred(y)}`)
       const res = pred(y) ? While(pred, y) : Done(x)
       return res.attempt(fn)
     },
