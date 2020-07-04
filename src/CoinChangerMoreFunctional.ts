@@ -52,7 +52,7 @@ const makeChangeForCoin = ({tracker, coin} : {tracker: ChangeTracker, coin: Coin
 const makeChange = (acc : ChangeTracker, currentCoin : Coin, ) => 
     While(moreChange, {tracker: acc, coin: currentCoin})
       .attempt(makeChangeForCoin)
-      .finally((i: any)=>i.tracker)
+      .finally((result: any)=>result.tracker)
 
 const coinChanger = (changeToMake: number) => {
   const coins = [ Quarter, Dime, Nickel, Penny ]
