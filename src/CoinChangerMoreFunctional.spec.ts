@@ -2,7 +2,7 @@ import * as CoinChanger from './CoinChangerMoreFunctional'
 
 const expect = require('chai').expect
 
-describe('CoinChanger-coinChanger', function () {
+describe('CoinChangerFP-coinChanger', function () {
   const test = CoinChanger.coinChanger;
   it('should exist', function () {
     expect(test(67)).to.not.be.undefined;
