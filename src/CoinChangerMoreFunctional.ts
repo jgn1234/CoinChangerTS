@@ -24,7 +24,7 @@ const Quarter: Coin = {coinId: 'Q', value: 25}
 const Fifty: Coin = {coinId: 'F', value: 50}
 const Dollar: Coin = {coinId: 'S', value: 100}
 
-const moreChange = ({tracker, coin} : ChangeTrackerCoin) => FP.gte(0,tracker.remainingChange)
+const moreChange = ({tracker, coin} : ChangeTrackerCoin) => FP.gteZero(tracker.remainingChange)
 
 const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
   const remainingChange = tracker.remainingChange - coin.value

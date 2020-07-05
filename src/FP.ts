@@ -1,4 +1,6 @@
-export { Done, While, gte, identity }
+export { Done, While, gte, gteZero, identity }
+
+import * as Curry from './Curry'
 
 const Done = (x: any) => {
   return ({
@@ -18,6 +20,7 @@ const While = (pred: Function, x: any) => {
   })
 }
 
-const gte = (x: number, y: number): boolean => y>=x
+const gte = Curry.curry((x: number, y: number): boolean => y>=x)
+const gteZero = gte(0)
 
 const identity = <T>(v: T): T => v
