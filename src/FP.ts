@@ -8,7 +8,6 @@ const Done = (x: any) => {
     x: x,
     attempt: () => Done(x),
     finally: (fn: Function) => {
-      // console.log('in done.finally')
       return fn(x)
     }
   })
