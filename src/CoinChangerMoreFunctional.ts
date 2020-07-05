@@ -30,20 +30,20 @@ const makeTrackerCoin = (tracker: Tracker, coin: Coin): TrackerCoin =>
 const makeTracker = (remainingChange: number, coinsToReturn: string,): Tracker => 
   ({remainingChange, coinsToReturn})
 
-const moreChange = ({tracker, coin} : TrackerCoin): Boolean => 
+const moreChange = ({tracker, coin}: TrackerCoin): Boolean => 
   FP.gte(coin.value, tracker.remainingChange)
 
-const calcRemainingChange = ({tracker, coin} : TrackerCoin): TrackerCoin => 
+const calcRemainingChange = ({tracker, coin}: TrackerCoin): TrackerCoin => 
   makeTrackerCoin(makeTracker(tracker.remainingChange - coin.value, tracker.coinsToReturn), coin)
 
-const calcCoinsToReturn = ({tracker, coin} : TrackerCoin): TrackerCoin => 
+const calcCoinsToReturn = ({tracker, coin}: TrackerCoin): TrackerCoin => 
   makeTrackerCoin(makeTracker(tracker.remainingChange, tracker.coinsToReturn + coin.coinId), coin)
 
 const makeChangeForCoin = (trackerCoin : TrackerCoin) => {
   return FP.pipe(calcRemainingChange, calcCoinsToReturn)(trackerCoin)
 }
 
-const makeChange = (acc : Tracker, currentCoin : Coin, ): Tracker => {
+const makeChange = (acc: Tracker, currentCoin: Coin, ): Tracker => {
   const res = 
     FP.While(moreChange, makeTrackerCoin(acc, currentCoin))
       .attempt(makeChangeForCoin)
@@ -51,9 +51,9 @@ const makeChange = (acc : Tracker, currentCoin : Coin, ): Tracker => {
   return res.tracker
 }
 
-const coinChanger = (changeToMake: number) => {
+const coinChanger = (changeToMake: number): string => {
   const coins = [ Quarter, Dime, Nickel, Penny ]
   
-  const res : Tracker = coins.reduce(makeChange, makeTracker(changeToMake, ''))
+  const res: Tracker = coins.reduce(makeChange, makeTracker(changeToMake, ''))
   return res.coinsToReturn
 }
