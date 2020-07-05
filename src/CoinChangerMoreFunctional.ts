@@ -44,10 +44,11 @@ const makeChangeForCoin = (trackerCoin : TrackerCoin) => {
 }
 
 const makeChange = (acc : Tracker, currentCoin : Coin, ): Tracker => {
-    const res = FP.While(moreChange, makeTrackerCoin(acc, currentCoin))
+  const res = 
+    FP.While(moreChange, makeTrackerCoin(acc, currentCoin))
       .attempt(makeChangeForCoin)
       .finally(FP.identity);
-      return res.tracker
+  return res.tracker
 }
 
 const coinChanger = (changeToMake: number) => {
