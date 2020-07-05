@@ -1,25 +1,6 @@
 export {coinChanger, makeChange}
 
-const Done = (x: any) => {
-  return ({
-    attempt: () => Done(x),
-    finally: (fn: Function) => fn(x),
-  })
-}
-
-const While = (pred: Function, x: any) => {
-  return ({
-    attempt: (fn: Function): any => {
-      const y = fn(x)
-      const res = pred(y) ? While(pred, y) : Done(x)
-      return res.attempt(fn)
-    },
-    finally: (fn: Function) => x,
-  })
-}
-
-const gte = (x: number, y: number): boolean => y>=x
-const identity = <T>(v: T): T => v
+import * as FP from './FP'
 
 type ChangeTracker = {
   remainingChange: number,
@@ -43,8 +24,7 @@ const Quarter: Coin = {coinId: 'Q', value: 25}
 const Fifty: Coin = {coinId: 'F', value: 50}
 const Dollar: Coin = {coinId: 'S', value: 100}
 
-const moreChange = ({tracker, coin} : ChangeTrackerCoin) => gte(0,tracker.remainingChange)
-// const moreChange = ({tracker, coin} : {tracker: ChangeTracker, coin: Coin}) => gte(0,tracker.remainingChange)
+const moreChange = ({tracker, coin} : ChangeTrackerCoin) => FP.gte(0,tracker.remainingChange)
 
 const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
   const remainingChange = tracker.remainingChange - coin.value
@@ -56,7 +36,7 @@ const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
 }
 
 const makeChange = (acc : ChangeTracker, currentCoin : Coin, ) => 
-    While(moreChange, <ChangeTrackerCoin> {tracker: acc, coin: currentCoin})
+    FP.While(moreChange, <ChangeTrackerCoin> {tracker: acc, coin: currentCoin})
       .attempt(makeChangeForCoin)
       .finally((result: ChangeTrackerCoin)=>result.tracker)
 
