@@ -32,8 +32,8 @@ const calcRemainingChange = ({tracker, coin} : ChangeTrackerCoin) => tracker.rem
 const calcCoinsToReturn = ({tracker, coin} : ChangeTrackerCoin) => tracker.coinsToReturn + coin.coinId
 
 const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
-  const remainingChange = tracker.remainingChange - coin.value
-  const coinsToReturn = tracker.coinsToReturn + coin.coinId
+  const remainingChange = calcRemainingChange({tracker, coin})
+  const coinsToReturn = calcCoinsToReturn({tracker, coin})
   return makeTracker({remainingChange, coinsToReturn}, coin)
 }
 
