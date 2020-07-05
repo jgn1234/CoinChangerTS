@@ -24,18 +24,18 @@ const Quarter: Coin = {coinId: 'Q', value: 25}
 const Fifty: Coin = {coinId: 'F', value: 50}
 const Dollar: Coin = {coinId: 'S', value: 100}
 
+const makeTracker = (tracker: ChangeTracker, coin: Coin): ChangeTrackerCoin => ({tracker, coin})
+
 const moreChange = ({tracker, coin} : ChangeTrackerCoin) => FP.gteZero(tracker.remainingChange)
+
+const calcRemainingChange = ({tracker, coin} : ChangeTrackerCoin) => tracker.remainingChange - coin.value
+const calcCoinsToReturn = ({tracker, coin} : ChangeTrackerCoin) => tracker.coinsToReturn + coin.coinId
 
 const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
   const remainingChange = tracker.remainingChange - coin.value
   const coinsToReturn = tracker.coinsToReturn + coin.coinId
-  return ({
-    tracker: {remainingChange, coinsToReturn },
-    coin,
-  })
+  return makeTracker({remainingChange, coinsToReturn}, coin)
 }
-
-const makeTracker = (tracker: ChangeTracker, coin: Coin): ChangeTrackerCoin => ({tracker, coin})
 
 const makeChange = (acc : ChangeTracker, currentCoin : Coin, ) => 
     FP.While(moreChange, makeTracker(acc, currentCoin))
