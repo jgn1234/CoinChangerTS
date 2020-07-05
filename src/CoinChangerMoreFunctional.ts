@@ -43,12 +43,14 @@ const makeChangeForCoin = (trackerCoin : TrackerCoin) => {
   return FP.pipe(calcRemainingChange, calcCoinsToReturn)(trackerCoin)
 }
 
+const returnTracker = (trackerCoin: TrackerCoin): Tracker => trackerCoin.tracker
+
 const makeChange = (acc: Tracker, currentCoin: Coin, ): Tracker => {
-  const res = 
+  return(
     FP.While(moreChange, makeTrackerCoin(acc, currentCoin))
       .attempt(makeChangeForCoin)
-      .finally(FP.identity);
-  return res.tracker
+      .finally(returnTracker)
+  )
 }
 
 const coinChanger = (changeToMake: number): string => {
