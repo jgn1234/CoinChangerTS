@@ -35,8 +35,10 @@ const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
   })
 }
 
+const makeTracker = (tracker: ChangeTracker, coin: Coin): ChangeTrackerCoin => ({tracker, coin})
+
 const makeChange = (acc : ChangeTracker, currentCoin : Coin, ) => 
-    FP.While(moreChange, <ChangeTrackerCoin> {tracker: acc, coin: currentCoin})
+    FP.While(moreChange, makeTracker(acc, currentCoin))
       .attempt(makeChangeForCoin)
       .finally((result: ChangeTrackerCoin)=>result.tracker)
 
