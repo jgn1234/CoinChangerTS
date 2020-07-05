@@ -4,16 +4,23 @@ import * as Curry from './Curry'
 
 const Done = (x: any) => {
   return ({
+    name: 'Done',
+    x: x,
     attempt: () => Done(x),
-    finally: (fn: Function) => fn(x),
+    finally: (fn: Function) => {
+      // console.log('in done.finally')
+      return fn(x)
+    }
   })
 }
 
 const While = (pred: Function, x: any) => {
   return ({
+    name: 'While',
+    x: x,
     attempt: (fn: Function): any => {
       const y = fn(x)
-      const res = pred(y) ? While(pred, y) : Done(x)
+      const res = pred(x) ? While(pred, y) : Done(x)
       return res.attempt(fn)
     },
     finally: (fn: Function) => x,
