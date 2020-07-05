@@ -2,7 +2,7 @@ export {coinChanger, makeChange}
 
 import * as FP from './FP'
 
-type ChangeTracker = {
+type Tracker = {
   remainingChange: number,
   coinsToReturn: string,
 }
@@ -12,8 +12,8 @@ type Coin = {
   value: number,
 }
 
-type ChangeTrackerCoin = {
-  tracker: ChangeTracker,
+type TrackerCoin = {
+  tracker: Tracker,
   coin: Coin,
 }
 
@@ -24,27 +24,28 @@ const Quarter: Coin = {coinId: 'Q', value: 25}
 const Fifty: Coin = {coinId: 'F', value: 50}
 const Dollar: Coin = {coinId: 'S', value: 100}
 
-const makeTracker = (tracker: ChangeTracker, coin: Coin): ChangeTrackerCoin => ({tracker, coin})
+const makeTrackerCoin = (tracker: Tracker, coin: Coin): TrackerCoin => ({tracker, coin})
 
-const moreChange = ({tracker, coin} : ChangeTrackerCoin) => FP.gteZero(tracker.remainingChange)
+const moreChange = ({tracker, coin} : TrackerCoin) => FP.gteZero(tracker.remainingChange)
 
-const calcRemainingChange = ({tracker, coin} : ChangeTrackerCoin) => tracker.remainingChange - coin.value
-const calcCoinsToReturn = ({tracker, coin} : ChangeTrackerCoin) => tracker.coinsToReturn + coin.coinId
+const calcRemainingChange = ({tracker, coin} : TrackerCoin) => tracker.remainingChange - coin.value
+const calcCoinsToReturn = ({tracker, coin} : TrackerCoin) => tracker.coinsToReturn + coin.coinId
 
-const makeChangeForCoin = ({tracker, coin} : ChangeTrackerCoin) => {
+const makeChangeForCoin = ({tracker, coin} : TrackerCoin) => {
   const remainingChange = calcRemainingChange({tracker, coin})
   const coinsToReturn = calcCoinsToReturn({tracker, coin})
-  return makeTracker({remainingChange, coinsToReturn}, coin)
+  const newTracker = FP.pipe()
+  return makeTrackerCoin({remainingChange, coinsToReturn}, coin)
 }
 
-const makeChange = (acc : ChangeTracker, currentCoin : Coin, ) => 
-    FP.While(moreChange, makeTracker(acc, currentCoin))
+const makeChange = (acc : Tracker, currentCoin : Coin, ) => 
+    FP.While(moreChange, makeTrackerCoin(acc, currentCoin))
       .attempt(makeChangeForCoin)
-      .finally((result: ChangeTrackerCoin)=>result.tracker)
+      .finally((result: TrackerCoin)=>result.tracker)
 
 const coinChanger = (changeToMake: number) => {
   const coins = [ Quarter, Dime, Nickel, Penny ]
   
-  const res = coins.reduce(makeChange, <ChangeTracker> {remainingChange: changeToMake, coinsToReturn: ''})
+  const res = coins.reduce(makeChange, <Tracker> {remainingChange: changeToMake, coinsToReturn: ''})
   return res.coinsToReturn
 }

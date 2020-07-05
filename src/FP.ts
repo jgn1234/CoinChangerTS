@@ -1,4 +1,4 @@
-export { Done, While, gte, gteZero, identity }
+export { Done, While, gte, gteZero, identity, pipe }
 
 import * as Curry from './Curry'
 
@@ -24,3 +24,6 @@ const gte = Curry.curry((x: number, y: number): boolean => y>=x)
 const gteZero = gte(0)
 
 const identity = <T>(v: T): T => v
+
+const pipe = (...fns: Function[]): Function => (x: any): any => fns.reduce((v, f) => f(v), x)
+
