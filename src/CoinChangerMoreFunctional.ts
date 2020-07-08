@@ -24,11 +24,11 @@ const Quarter: Coin = {coinId: 'Q', value: 25}
 const Fifty: Coin = {coinId: 'F', value: 50}
 const Dollar: Coin = {coinId: 'S', value: 100}
 
-const makeTrackerCoin = (tracker: Tracker, coin: Coin): TrackerCoin => 
-  ({tracker, coin})
-
 const makeTracker = (remainingChange: number, coinsToReturn: string,): Tracker => 
   ({remainingChange, coinsToReturn})
+
+const makeTrackerCoin = (tracker: Tracker, coin: Coin): TrackerCoin => 
+  ({tracker, coin})
 
 const moreChange = ({tracker, coin}: TrackerCoin): Boolean => 
   FP.gte(coin.value, tracker.remainingChange)
