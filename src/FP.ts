@@ -1,4 +1,4 @@
-export { Done, While, gte, gteZero, identity, pipe }
+export { Done, While, gte, gteZero, identity, pipe, trace }
 
 import * as Curry from './Curry'
 
@@ -33,3 +33,10 @@ const identity = <T>(v: T): T => v
 
 const pipe = (...fns: Function[]): Function => (x: any): any => fns.reduce((v, f) => f(v), x)
 
+const trace = Curry.curry((tag, x) => { console.log(tag, x); return x; })
+
+const map = Curry.curry((f, xs) => xs.map(f));
+
+const filter = Curry.curry((f, xs) => xs.filter(f));
+
+const reduce = Curry.curry((f, x, xs) => xs.reduce(f, x))

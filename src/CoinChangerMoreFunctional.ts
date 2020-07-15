@@ -33,8 +33,11 @@ const makeTrackerCoin = (tracker: Tracker, coin: Coin): TrackerCoin =>
 const moreChange = ({tracker, coin}: TrackerCoin): Boolean => 
   FP.gte(coin.value, tracker.remainingChange)
 
+const makeTrackerCoin2 = (x: number, y: string, z: Coin) =>  makeTrackerCoin(makeTracker(x, y), z)
+
 const calcRemainingChange = ({tracker, coin}: TrackerCoin): TrackerCoin => 
-  makeTrackerCoin(makeTracker(tracker.remainingChange - coin.value, tracker.coinsToReturn), coin)
+// makeTrackerCoin(makeTracker(tracker.remainingChange - coin.value, tracker.coinsToReturn), coin)
+makeTrackerCoin2(tracker.remainingChange - coin.value, tracker.coinsToReturn, coin)
 
 const calcCoinsToReturn = ({tracker, coin}: TrackerCoin): TrackerCoin => 
   makeTrackerCoin(makeTracker(tracker.remainingChange, tracker.coinsToReturn + coin.coinId), coin)
